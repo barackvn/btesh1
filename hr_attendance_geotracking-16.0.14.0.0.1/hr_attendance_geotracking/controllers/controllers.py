@@ -49,12 +49,48 @@ class HrAttendanceGeospatial(HrAttendanceBase):
         if not attendance.check_out:
             geo_coords_id = {'latitude': kw.get('latitude'), 'longitude': kw.get('longitude'), 'hr_attendance_id':int(kw.get('user_id'))}
             attendance.geo_coords_ids = [(0, 0, geo_coords_id)]
-        geotracking_access_enable = request.env['ir.config_parameter'].sudo().get_param(str(request.env.user.company_id.id)+'hr_attendance_geotracking_access')
-        distanse_notify_check_in = request.env['ir.config_parameter'].sudo().get_param(str(request.env.user.company_id.id)+'hr_attendance_distanse_notify_check_in')
-        distanse_notify_check_out = request.env['ir.config_parameter'].sudo().get_param(str(request.env.user.company_id.id)+'hr_attendance_distanse_notify_check_out')
-        geotracking_batch_mode = request.env['ir.config_parameter'].sudo().get_param(str(request.env.user.company_id.id)+'hr_attendance_geotracking_batch_mode')
-        geotracking_period_server_enable = request.env['ir.config_parameter'].sudo().get_param(str(request.env.user.company_id.id)+'hr_attendance_geotracking_period_server_enable')
-        geotracking_period_server_qty = request.env['ir.config_parameter'].sudo().get_param(str(request.env.user.company_id.id)+'hr_attendance_geotracking_period_server_qty')
+        geotracking_access_enable = (
+            request.env['ir.config_parameter']
+            .sudo()
+            .get_param(
+                f'{str(request.env.user.company_id.id)}hr_attendance_geotracking_access'
+            )
+        )
+        distanse_notify_check_in = (
+            request.env['ir.config_parameter']
+            .sudo()
+            .get_param(
+                f'{str(request.env.user.company_id.id)}hr_attendance_distanse_notify_check_in'
+            )
+        )
+        distanse_notify_check_out = (
+            request.env['ir.config_parameter']
+            .sudo()
+            .get_param(
+                f'{str(request.env.user.company_id.id)}hr_attendance_distanse_notify_check_out'
+            )
+        )
+        geotracking_batch_mode = (
+            request.env['ir.config_parameter']
+            .sudo()
+            .get_param(
+                f'{str(request.env.user.company_id.id)}hr_attendance_geotracking_batch_mode'
+            )
+        )
+        geotracking_period_server_enable = (
+            request.env['ir.config_parameter']
+            .sudo()
+            .get_param(
+                f'{str(request.env.user.company_id.id)}hr_attendance_geotracking_period_server_enable'
+            )
+        )
+        geotracking_period_server_qty = (
+            request.env['ir.config_parameter']
+            .sudo()
+            .get_param(
+                f'{str(request.env.user.company_id.id)}hr_attendance_geotracking_period_server_qty'
+            )
+        )
         return json.dumps({
             "geotracking_access_enable": geotracking_access_enable,
             "distanse_notify_check_in": distanse_notify_check_in,

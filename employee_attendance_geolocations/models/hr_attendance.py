@@ -25,8 +25,12 @@ class HrAttendance(models.Model):
 
     def is_required_location(self):
         ConfigParameter = self.env['ir.config_parameter'].sudo()
-        is_required_location = ConfigParameter.get_param('employee_attendance_geolocations.is_required_location') or False
-        return is_required_location
+        return (
+            ConfigParameter.get_param(
+                'employee_attendance_geolocations.is_required_location'
+            )
+            or False
+        )
 
     def set_employee_check_in_out_location(self, lat=False, long=False, device_type='system'):
         self.ensure_one()
@@ -40,9 +44,13 @@ class HrAttendance(models.Model):
                 self.check_out_latitude = lat
                 self.check_out_longitude = long
                 self.check_out_device = device_type
-                if self.check_in_latitude and self.check_in_longitude:
-                    if round(self.check_in_latitude, 3) == round(lat, 3) and round(self.check_in_longitude, 3) == round(long, 3):
-                        self.same_location = True
+                if (
+                    self.check_in_latitude
+                    and self.check_in_longitude
+                    and round(self.check_in_latitude, 3) == round(lat, 3)
+                    and round(self.check_in_longitude, 3) == round(long, 3)
+                ):
+                    self.same_location = True
         return True
 
     def action_employee_check_in_out_location(self, check_in=True):

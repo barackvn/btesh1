@@ -21,8 +21,13 @@ class EmployeeAttendanceLocationWizard(models.TransientModel):
     active_cluster = fields.Boolean(string='Active Location Cluster', default=False)
 
     def _get_map_wizard(self, hr_attendance_ids, target=False, active_cluster=False):
-        user_groups = self.env['ir.config_parameter'].sudo().get_param('employee_attendance_geolocations.attendance_geolocation_access_group')
-        if user_groups:
+        if (
+            user_groups := self.env['ir.config_parameter']
+            .sudo()
+            .get_param(
+                'employee_attendance_geolocations.attendance_geolocation_access_group'
+            )
+        ):
             user_groups = literal_eval(user_groups)
             user_access = self.env['res.groups'].sudo().search([('id', 'in', user_groups), ('users.id', '=', self.env.user.id)], limit=1)
             if not user_access:

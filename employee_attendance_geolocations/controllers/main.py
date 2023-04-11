@@ -16,7 +16,7 @@ class HrAttendanceGelocation(HrAttendance):
 
     def get_redirect_url_for_location(self, employee, allow_distance):
         if allow_distance and employee.check_out and not employee.same_location:
-            return 'origin=%s,%s&destination=%s,%s'%(employee.check_in_latitude, employee.check_in_longitude, employee.check_out_latitude, employee.check_out_longitude)
+            return f'origin={employee.check_in_latitude},{employee.check_in_longitude}&destination={employee.check_out_latitude},{employee.check_out_longitude}'
         return False
 
     def _get_employee_attendance_domain(self, filter={}):
@@ -28,14 +28,14 @@ class HrAttendanceGelocation(HrAttendance):
         message_to = False
 
         if filter.get('search_item'):
-            field_name = 'employee_id.%s'%filter.get('search_field', 'name')
+            field_name = f"employee_id.{filter.get('search_field', 'name')}"
             domain.append((field_name, 'ilike', filter['search_item']))
         if date_from:
             domain.append(('check_in', '>=', date_from))
             message_from = date_from
             if not date_to:
                 message_to = today
-                domain.append(('check_in', '<=', today))
+                domain.append(('check_in', '<=', message_to))
         if date_to:
             message_to = date_to
             domain.append(('check_in', '<=', date_to))
@@ -56,9 +56,12 @@ class HrAttendanceGelocation(HrAttendance):
         emp_attendances = []
         header_info = _('Report #Today')
 
-        google_api_key = request.env['ir.config_parameter'].sudo().get_param('base_geolocalize.google_map_api_key')
-        if google_api_key:
-            google_js = '//maps.google.com/maps/api/js?key=%s'%google_api_key
+        if (
+            google_api_key := request.env['ir.config_parameter']
+            .sudo()
+            .get_param('base_geolocalize.google_map_api_key')
+        ):
+            google_js = f'//maps.google.com/maps/api/js?key={google_api_key}'
         else:
             google_js = '//maps.google.com/maps/api/js'
 
@@ -95,7 +98,7 @@ class HrAttendanceGelocation(HrAttendance):
                         'type': _('Check Out Information'),
                         'device_type': attendance.check_out_device
                     }
-                    if attendance.same_location and len(values) > 0:
+                    if attendance.same_location and values:
                         values[0]['same_location'] = True
                         values[0]['same_location'] = True
                         values[0]['check_out_location'] = check_out_location

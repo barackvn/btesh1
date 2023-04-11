@@ -24,7 +24,12 @@ class ResConfigSettings(models.TransientModel):
     @api.model
     def get_values(self):
         res = super(ResConfigSettings, self).get_values()
-        attendance_geolocation_access_group = self.env['ir.config_parameter'].sudo().get_param('employee_attendance_geolocations.attendance_geolocation_access_group')
-        if attendance_geolocation_access_group:
+        if (
+            attendance_geolocation_access_group := self.env['ir.config_parameter']
+            .sudo()
+            .get_param(
+                'employee_attendance_geolocations.attendance_geolocation_access_group'
+            )
+        ):
             res.update(attendance_geolocation_access_group=[(6, 0, literal_eval(attendance_geolocation_access_group))])
         return res

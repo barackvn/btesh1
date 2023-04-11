@@ -58,21 +58,67 @@ class ResConfigSettingsGeotracking(models.TransientModel):
     def set_values(self):
         res = super(ResConfigSettingsGeotracking, self).set_values()
         config_parameters = self.env['ir.config_parameter']
-        config_parameters.set_param(str(self.env.user.company_id.id)+"hr_attendance_geotracking_access", self.geotracking_access)
-        config_parameters.set_param(str(self.env.user.company_id.id)+"hr_attendance_distanse_notify_check_in", self.distanse_notify_check_in)
-        config_parameters.set_param(str(self.env.user.company_id.id)+"hr_attendance_distanse_notify_check_out", self.distanse_notify_check_out)
-        config_parameters.set_param(str(self.env.user.company_id.id)+"hr_attendance_geotracking_batch_mode", self.geotracking_batch_mode)
-        config_parameters.set_param(str(self.env.user.company_id.id)+"hr_attendance_geotracking_period_server_enable", self.geotracking_period_server_enable)
-        config_parameters.set_param(str(self.env.user.company_id.id)+"hr_attendance_geotracking_period_server_qty", self.geotracking_period_server_qty)
+        config_parameters.set_param(
+            f"{str(self.env.user.company_id.id)}hr_attendance_geotracking_access",
+            self.geotracking_access,
+        )
+        config_parameters.set_param(
+            f"{str(self.env.user.company_id.id)}hr_attendance_distanse_notify_check_in",
+            self.distanse_notify_check_in,
+        )
+        config_parameters.set_param(
+            f"{str(self.env.user.company_id.id)}hr_attendance_distanse_notify_check_out",
+            self.distanse_notify_check_out,
+        )
+        config_parameters.set_param(
+            f"{str(self.env.user.company_id.id)}hr_attendance_geotracking_batch_mode",
+            self.geotracking_batch_mode,
+        )
+        config_parameters.set_param(
+            f"{str(self.env.user.company_id.id)}hr_attendance_geotracking_period_server_enable",
+            self.geotracking_period_server_enable,
+        )
+        config_parameters.set_param(
+            f"{str(self.env.user.company_id.id)}hr_attendance_geotracking_period_server_qty",
+            self.geotracking_period_server_qty,
+        )
         return res
 
     @api.model
     def get_values(self):
         res = super(ResConfigSettingsGeotracking, self).get_values()
-        res.update(geotracking_access = self.env['ir.config_parameter'].get_param(str(self.env.user.company_id.id)+'hr_attendance_geotracking_access'))
-        res.update(distanse_notify_check_in = self.env['ir.config_parameter'].get_param(str(self.env.user.company_id.id)+'hr_attendance_distanse_notify_check_in'))
-        res.update(distanse_notify_check_out = self.env['ir.config_parameter'].get_param(str(self.env.user.company_id.id)+'hr_attendance_distanse_notify_check_out'))
-        res.update(geotracking_batch_mode = self.env['ir.config_parameter'].get_param(str(self.env.user.company_id.id)+'hr_attendance_geotracking_batch_mode'))
-        res.update(geotracking_period_server_enable = self.env['ir.config_parameter'].get_param(str(self.env.user.company_id.id)+'hr_attendance_geotracking_period_server_enable'))
-        res.update(geotracking_period_server_qty = self.env['ir.config_parameter'].get_param(str(self.env.user.company_id.id)+'hr_attendance_geotracking_period_server_qty'))
+        res.update(
+            geotracking_access=self.env['ir.config_parameter'].get_param(
+                f'{str(self.env.user.company_id.id)}hr_attendance_geotracking_access'
+            )
+        )
+        res.update(
+            distanse_notify_check_in=self.env['ir.config_parameter'].get_param(
+                f'{str(self.env.user.company_id.id)}hr_attendance_distanse_notify_check_in'
+            )
+        )
+        res.update(
+            distanse_notify_check_out=self.env['ir.config_parameter'].get_param(
+                f'{str(self.env.user.company_id.id)}hr_attendance_distanse_notify_check_out'
+            )
+        )
+        res.update(
+            geotracking_batch_mode=self.env['ir.config_parameter'].get_param(
+                f'{str(self.env.user.company_id.id)}hr_attendance_geotracking_batch_mode'
+            )
+        )
+        res.update(
+            geotracking_period_server_enable=self.env[
+                'ir.config_parameter'
+            ].get_param(
+                f'{str(self.env.user.company_id.id)}hr_attendance_geotracking_period_server_enable'
+            )
+        )
+        res.update(
+            geotracking_period_server_qty=self.env[
+                'ir.config_parameter'
+            ].get_param(
+                f'{str(self.env.user.company_id.id)}hr_attendance_geotracking_period_server_qty'
+            )
+        )
         return res
